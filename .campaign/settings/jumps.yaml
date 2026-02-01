@@ -1,0 +1,53 @@
+paths:
+    projects: projects/
+    worktrees: projects/worktrees/
+    ai_docs: ai_docs/
+    docs: docs/
+    festivals: festivals/
+    workflow: workflow/
+    intents: workflow/intents/
+    code_reviews: workflow/code_reviews/
+    pipelines: workflow/pipelines/
+    design: workflow/design/
+    dungeon: dungeon/
+shortcuts:
+    a:
+        path: ai_docs/
+        description: Jump to AI docs directory
+    cfg:
+        description: Config commands
+        concept: config
+    cr:
+        path: workflow/code_reviews/
+        description: Jump to code reviews
+    d:
+        path: docs/
+        description: Jump to docs directory
+    de:
+        path: workflow/design/
+        description: Jump to design
+    du:
+        path: dungeon/
+        description: Jump to dungeon directory
+    f:
+        path: festivals/
+        description: Festivals directory and commands
+        concept: festival
+    i:
+        path: workflow/intents/
+        description: Intents directory and commands
+        concept: intent
+    p:
+        path: projects/
+        description: Projects directory and commands
+        concept: project
+    pi:
+        path: workflow/pipelines/
+        description: Jump to pipelines
+    w:
+        path: workflow/
+        description: Jump to workflow directory
+    wt:
+        path: projects/worktrees/
+        description: Worktrees directory and commands
+        concept: worktrees
