@@ -2,6 +2,7 @@ id: c75a7179-1e89-4aa5-99b1-cb8139d8761d
 name: claude-kitchen
 type: product
 description: 'Campaign: claude-kitchen'
+mission: Claude kitchen meetup ai workspace
 created_at: 2026-02-01T14:54:23.066279-07:00
 concepts:
     - name: projects
