@@ -1,0 +1,101 @@
+#!/usr/bin/env just --justfile
+# HemingwayGuard - macOS Text Interception for Messaging Apps
+
+set dotenv-load := true
+
+# Configuration
+binary_name := "hemingway-guard"
+bin_dir := "bin"
+main_path := "./cmd/hemingway-guard"
+gobin := env_var_or_default("GOBIN", `go env GOPATH` + "/bin")
+
+# Modules
+[doc('Testing (unit, race, coverage)')]
+mod test '.justfiles/test.just'
+
+[doc('macOS .app bundle creation')]
+mod bundle '.justfiles/bundle.just'
+
+[doc('Development utilities')]
+mod dev '.justfiles/dev.just'
+
+[doc('Git tag management')]
+mod tags '.justfiles/tags.just'
+
+[private]
+default:
+    #!/usr/bin/env bash
+    echo "HemingwayGuard - Text Interception for Messaging Apps"
+    echo ""
+    just --list --unsorted
+
+# Build hemingway-guard binary
+build:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Building {{binary_name}}..."
+    mkdir -p {{bin_dir}}
+    go build -o {{bin_dir}}/{{binary_name}} {{main_path}}
+    echo "✅ Built {{bin_dir}}/{{binary_name}}"
+
+# Build without vet (fast build)
+build-only:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    mkdir -p {{bin_dir}}
+    go build -o {{bin_dir}}/{{binary_name}} {{main_path}}
+
+# Format Go code
+fmt:
+    go fmt ./...
+
+# Run go vet
+vet:
+    go vet ./...
+
+# Run formatting and vetting
+lint: fmt vet
+    @echo "✅ Linting complete"
+
+# Clean build artifacts
+clean:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Cleaning build artifacts..."
+    rm -rf {{bin_dir}}
+    rm -rf HemingwayGuard.app
+    rm -rf dist
+    echo "✅ Clean complete"
+
+# Update and tidy dependencies
+deps:
+    go get -u ./...
+    go mod tidy
+
+# Install hemingway-guard to $GOBIN
+install: build
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Installing {{binary_name}}..."
+    mkdir -p {{gobin}}
+    cp {{bin_dir}}/{{binary_name}} {{gobin}}/{{binary_name}}
+    echo "Signing binary for macOS..."
+    codesign --force --sign - {{gobin}}/{{binary_name}} 2>/dev/null || \
+        echo "Warning: Could not sign binary (non-fatal)"
+    echo "✅ {{binary_name}} installed to {{gobin}}/{{binary_name}}"
+
+# Uninstall hemingway-guard from $GOBIN
+uninstall:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Uninstalling {{binary_name}}..."
+    if [ -f {{gobin}}/{{binary_name}} ]; then
+        rm {{gobin}}/{{binary_name}}
+        echo "✅ {{binary_name}} uninstalled from {{gobin}}"
+    else
+        echo "{{binary_name}} not found in {{gobin}}"
+    fi
+
+# Run the application
+run: build
+    ./{{bin_dir}}/{{binary_name}}

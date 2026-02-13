@@ -1,0 +1,46 @@
+# Build artifacts
+bin/
+dist/
+
+# macOS app bundle
+*.app/
+
+# Test coverage
+coverage.out
+coverage.html
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Debug
+*.log
+debug/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
